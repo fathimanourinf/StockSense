@@ -11,7 +11,6 @@ function signToken(user) {
   });
 }
 
-// POST /api/auth/signup
 exports.signup = asyncHandler(async (req, res) => {
   const { name, email, password, role } = req.body;
   if (!name || !email || !password) {
@@ -32,7 +31,6 @@ exports.signup = asyncHandler(async (req, res) => {
   );
 });
 
-// POST /api/auth/login
 exports.login = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
   if (!email || !password) return fail(res, "Email and password are required.", 422);
@@ -43,7 +41,6 @@ exports.login = asyncHandler(async (req, res) => {
   }
 
   const token = signToken(user);
-  // This is what the frontend uses to redirect straight to the dashboard.
   return ok(res, {
     token,
     user: { id: user._id, name: user.name, email: user.email, role: user.role },
@@ -51,11 +48,9 @@ exports.login = asyncHandler(async (req, res) => {
   });
 });
 
-// POST /api/auth/forgot-password  { email }
 exports.forgotPassword = asyncHandler(async (req, res) => {
   const { email } = req.body;
   const user = await User.findOne({ email });
-  // Don't reveal whether the email exists — respond the same way either way.
   if (!user) return ok(res, null, "If that email exists, an OTP has been sent.");
 
   const code = generateOtpCode();
@@ -66,7 +61,6 @@ exports.forgotPassword = asyncHandler(async (req, res) => {
   return ok(res, null, "If that email exists, an OTP has been sent.");
 });
 
-// POST /api/auth/verify-otp  { email, code }
 exports.verifyOtp = asyncHandler(async (req, res) => {
   const { email, code } = req.body;
   const otp = await Otp.findOne({ email, code, used: false }).sort({ createdAt: -1 });
@@ -78,7 +72,6 @@ exports.verifyOtp = asyncHandler(async (req, res) => {
   return ok(res, { verified: true }, "OTP verified. You may now reset your password.");
 });
 
-// POST /api/auth/reset-password  { email, code, newPassword }
 exports.resetPassword = asyncHandler(async (req, res) => {
   const { email, code, newPassword } = req.body;
   if (!newPassword || newPassword.length < 6) {
@@ -99,7 +92,6 @@ exports.resetPassword = asyncHandler(async (req, res) => {
   return ok(res, null, "Password reset successfully. You can now log in.");
 });
 
-// GET /api/auth/me
 exports.me = asyncHandler(async (req, res) => {
   return ok(res, {
     id: req.user._id,

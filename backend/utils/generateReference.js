@@ -1,4 +1,3 @@
-// Generates human-friendly document references like RCPT-000123, DO-000045.
 const Counter = require("../models/Counter");
 
 async function nextReference(prefix) {

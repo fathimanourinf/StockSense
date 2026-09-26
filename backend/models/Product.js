@@ -8,7 +8,6 @@ const productSchema = new mongoose.Schema(
     uom: { type: String, required: true, default: "unit" }, // unit of measure: kg, unit, box...
     description: { type: String, trim: true },
 
-    // Reordering rules
     reorderPoint: { type: Number, default: 0 }, // trigger "low stock" below this
     reorderQty: { type: Number, default: 0 }, // suggested quantity to reorder
 

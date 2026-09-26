@@ -28,7 +28,7 @@ export default function Products() {
   }
 
   useEffect(() => {
-    const t = setTimeout(load, 300); // debounce SKU/name search
+    const t = setTimeout(load, 300);
     return () => clearTimeout(t);
   }, [search]);
 

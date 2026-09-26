@@ -1,5 +1,3 @@
-// One place for every API call — always hits the real backend, never a
-// static JSON file, so data is live and reflects actual stock at all times.
 const BASE_URL = "/api";
 
 let authToken = null;

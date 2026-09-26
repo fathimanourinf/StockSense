@@ -4,8 +4,6 @@ import { useToast } from "../context/ToastContext";
 import KpiCard from "../components/KpiCard";
 import StatusBadge from "../components/StatusBadge";
 
-// Every number here comes from a live API call — nothing is hard-coded,
-// so the dashboard always reflects real, current stock state.
 export default function Dashboard() {
   const { push } = useToast();
   const [kpis, setKpis] = useState(null);

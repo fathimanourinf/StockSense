@@ -1,7 +1,5 @@
 const mongoose = require("mongoose");
 
-// Immutable audit trail: every single stock movement, ever.
-// This is what "Move History" in the nav reads from.
 const stockLedgerSchema = new mongoose.Schema(
   {
     product: { type: mongoose.Schema.Types.ObjectId, ref: "Product", required: true },

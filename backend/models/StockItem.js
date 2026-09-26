@@ -1,7 +1,5 @@
 const mongoose = require("mongoose");
 
-// The current on-hand quantity of one product at one location.
-// This is the "live" table the dashboard and stock checks read from.
 const stockItemSchema = new mongoose.Schema(
   {
     product: { type: mongoose.Schema.Types.ObjectId, ref: "Product", required: true },

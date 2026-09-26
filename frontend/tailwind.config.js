@@ -1,23 +1,30 @@
-/** @type {import('tailwindcss').Config} */
 export default {
   content: ["./index.html", "./src/**/*.{js,jsx}"],
   theme: {
     extend: {
       colors: {
-        // Single source of truth for the color scheme — reuse these
-        // classes everywhere instead of one-off hex values.
         brand: {
-          50: "#eef2ff",
-          100: "#e0e7ff",
-          200: "#c7d2fe",
-          400: "#818cf8",
-          500: "#6366f1",
-          600: "#4f46e5",
-          700: "#4338ca",
+          50: "#edf7f4",
+          100: "#d6eee7",
+          200: "#b3dfd3",
+          300: "#83c8b6",
+          400: "#54ad98",
+          500: "#308f79",
+          600: "#247864",
+          700: "#1c6252",
+          800: "#174e43",
+          900: "#123d35",
+        },
+        accent: {
+          50: "#fff4ed",
+          100: "#ffe4d4",
+          200: "#ffc6a4",
+          500: "#e67b4e",
+          600: "#cf6036",
         },
       },
       fontFamily: {
-        sans: ["Inter", "ui-sans-serif", "system-ui", "sans-serif"],
+        sans: ["DM Sans", "ui-sans-serif", "system-ui", "sans-serif"],
       },
     },
   },

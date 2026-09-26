@@ -4,14 +4,11 @@ import { api, setAuthToken } from "../api/client";
 const AuthContext = createContext(null);
 
 export function AuthProvider({ children }) {
-  // Token kept in memory only (not localStorage) — cleared on refresh by
-  // design; simplest secure default for a project like this.
   const [user, setUser] = useState(null);
   const [token, setToken] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // No persisted session on refresh — just stop the initial spinner.
     setLoading(false);
   }, []);
 

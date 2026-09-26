@@ -1,6 +1,3 @@
-// Shared "status / warehouse-location / etc." filter chip row used across
-// Receipts, Deliveries, Transfers and Adjustments to match the dashboard's
-// dynamic filters spec.
 const STATUS_OPTIONS = ["", "draft", "waiting", "ready", "done", "cancelled"];
 
 export default function FilterBar({ status, onStatusChange, extra }) {

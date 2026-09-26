@@ -2,7 +2,6 @@ const jwt = require("jsonwebtoken");
 const User = require("../models/User");
 const { fail } = require("../utils/apiResponse");
 
-// Verifies the JWT and attaches req.user
 exports.protect = async (req, res, next) => {
   try {
     const header = req.headers.authorization;
@@ -21,7 +20,6 @@ exports.protect = async (req, res, next) => {
   }
 };
 
-// Restricts a route to specific roles, e.g. requireRole("inventory_manager")
 exports.requireRole =
   (...roles) =>
   (req, res, next) => {

@@ -9,7 +9,6 @@ const asyncHandler = require("../utils/asyncHandler");
 
 const PENDING_STATUSES = ["draft", "waiting", "ready"];
 
-// GET /api/dashboard/kpis
 exports.getKpis = asyncHandler(async (req, res) => {
   const [totalProductsInStock, pendingReceipts, pendingDeliveries, transfersScheduled] =
     await Promise.all([
@@ -23,7 +22,6 @@ exports.getKpis = asyncHandler(async (req, res) => {
       InternalTransfer.countDocuments({ status: { $in: PENDING_STATUSES } }),
     ]);
 
-  // Low stock / out of stock: compare each product's total on-hand qty to its reorderPoint.
   const stockTotals = await StockItem.aggregate([
     { $group: { _id: "$product", total: { $sum: "$quantity" } } },
   ]);
@@ -49,7 +47,6 @@ exports.getKpis = asyncHandler(async (req, res) => {
   });
 });
 
-// GET /api/dashboard/move-history?product=&location=&movementType=&page=&limit=
 exports.getMoveHistory = asyncHandler(async (req, res) => {
   const { product, location, movementType, page = 1, limit = 25 } = req.query;
   const filter = {};
@@ -69,7 +66,6 @@ exports.getMoveHistory = asyncHandler(async (req, res) => {
   return ok(res, { entries, total, page: Number(page), limit: Number(limit) });
 });
 
-// GET /api/dashboard/low-stock  -> list of products at/under reorder point (for alerts)
 exports.getLowStockAlerts = asyncHandler(async (req, res) => {
   const stockTotals = await StockItem.aggregate([
     { $group: { _id: "$product", total: { $sum: "$quantity" } } },

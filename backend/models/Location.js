@@ -1,6 +1,5 @@
 const mongoose = require("mongoose");
 
-// A location is a sub-area inside a warehouse: "Rack A", "Production Floor", etc.
 const locationSchema = new mongoose.Schema(
   {
     warehouse: { type: mongoose.Schema.Types.ObjectId, ref: "Warehouse", required: true },

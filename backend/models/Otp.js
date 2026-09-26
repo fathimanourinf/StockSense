@@ -10,7 +10,6 @@ const otpSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-// Auto-remove expired OTP docs from MongoDB.
 otpSchema.index({ expiresAt: 1 }, { expireAfterSeconds: 0 });
 
 module.exports = mongoose.model("Otp", otpSchema);

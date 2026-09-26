@@ -35,10 +35,8 @@ app.use("/api/transfers", transferRoutes);
 app.use("/api/adjustments", adjustmentRoutes);
 app.use("/api/dashboard", dashboardRoutes);
 
-// 404 handler
 app.use((req, res) => res.status(404).json({ success: false, message: "Route not found." }));
 
-// Central error handler (must be last)
 app.use(errorHandler);
 
 const PORT = process.env.PORT || 5000;

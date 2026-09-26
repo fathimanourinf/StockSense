@@ -1,6 +1,5 @@
 const { fail } = require("../utils/apiResponse");
 
-// Central error handler — catches anything passed to next(err) or thrown in async routes.
 module.exports = (err, req, res, next) => {
   console.error(err);
 

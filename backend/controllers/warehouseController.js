@@ -3,8 +3,6 @@ const Location = require("../models/Location");
 const { ok, fail } = require("../utils/apiResponse");
 const asyncHandler = require("../utils/asyncHandler");
 
-// -- Warehouses --
-
 exports.createWarehouse = asyncHandler(async (req, res) => {
   const { name, code, address } = req.body;
   if (!name || !code) return fail(res, "Warehouse name and code are required.", 422);

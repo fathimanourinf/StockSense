@@ -5,8 +5,6 @@ const asyncHandler = require("../utils/asyncHandler");
 const nextReference = require("../utils/generateReference");
 const { applyStockMovement } = require("../utils/stockService");
 
-// POST /api/adjustments  { location, reason, lines: [{product, countedQty}] }
-// systemQty and diff are computed server-side so they can't be spoofed.
 exports.createAdjustment = asyncHandler(async (req, res) => {
   const { location, reason, lines } = req.body;
   if (!location || !lines?.length) {
@@ -34,7 +32,6 @@ exports.createAdjustment = asyncHandler(async (req, res) => {
   return ok(res, adjustment, "Stock adjustment created.", 201);
 });
 
-// GET /api/adjustments?status=&location=&page=&limit=
 exports.listAdjustments = asyncHandler(async (req, res) => {
   const { status, location, page = 1, limit = 20 } = req.query;
   const filter = {};
@@ -52,7 +49,6 @@ exports.listAdjustments = asyncHandler(async (req, res) => {
   return ok(res, { adjustments, total, page: Number(page), limit: Number(limit) });
 });
 
-// GET /api/adjustments/:id
 exports.getAdjustment = asyncHandler(async (req, res) => {
   const adjustment = await StockAdjustment.findById(req.params.id)
     .populate("location", "name code")
@@ -61,7 +57,6 @@ exports.getAdjustment = asyncHandler(async (req, res) => {
   return ok(res, adjustment);
 });
 
-// POST /api/adjustments/:id/validate -> applies the diff to stock, marks as done
 exports.validateAdjustment = asyncHandler(async (req, res) => {
   const adjustment = await StockAdjustment.findById(req.params.id);
   if (!adjustment) return fail(res, "Stock adjustment not found.", 404);
@@ -71,11 +66,11 @@ exports.validateAdjustment = asyncHandler(async (req, res) => {
   }
 
   for (const line of adjustment.lines) {
-    if (line.diff === 0) continue; // no discrepancy, nothing to log
+    if (line.diff === 0) continue;
     await applyStockMovement({
       product: line.product,
       location: adjustment.location,
-      changeQty: line.diff, // positive = found extra stock, negative = damaged/missing
+      changeQty: line.diff,
       movementType: "adjustment",
       sourceDocType: "StockAdjustment",
       sourceDocId: adjustment._id,
@@ -91,7 +86,6 @@ exports.validateAdjustment = asyncHandler(async (req, res) => {
   return ok(res, adjustment, "Adjustment validated — stock corrected.");
 });
 
-// POST /api/adjustments/:id/cancel
 exports.cancelAdjustment = asyncHandler(async (req, res) => {
   const adjustment = await StockAdjustment.findById(req.params.id);
   if (!adjustment) return fail(res, "Stock adjustment not found.", 404);

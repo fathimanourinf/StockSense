@@ -5,7 +5,6 @@ const { ok, fail } = require("../utils/apiResponse");
 const asyncHandler = require("../utils/asyncHandler");
 const { applyStockMovement } = require("../utils/stockService");
 
-// POST /api/products
 exports.createProduct = asyncHandler(async (req, res) => {
   const { name, sku, category, uom, description, reorderPoint, reorderQty, initialStock } =
     req.body;
@@ -22,7 +21,6 @@ exports.createProduct = asyncHandler(async (req, res) => {
     reorderQty,
   });
 
-  // Optional initial stock: { locationId, quantity }
   if (initialStock && initialStock.locationId && initialStock.quantity > 0) {
     const location = await Location.findById(initialStock.locationId);
     if (!location) return fail(res, "Initial stock location not found.", 404);
@@ -33,7 +31,7 @@ exports.createProduct = asyncHandler(async (req, res) => {
       changeQty: initialStock.quantity,
       movementType: "adjustment",
       sourceDocType: "StockAdjustment",
-      sourceDocId: product._id, // no formal document for an initial-stock seed
+      sourceDocId: product._id,
       sourceDocReference: `INIT-${product.sku}`,
       createdBy: req.user._id,
     });
@@ -42,13 +40,12 @@ exports.createProduct = asyncHandler(async (req, res) => {
   return ok(res, product, "Product created.", 201);
 });
 
-// GET /api/products?search=&category=&page=&limit=
 exports.listProducts = asyncHandler(async (req, res) => {
   const { search, category, page = 1, limit = 20 } = req.query;
 
   const query = { isActive: true };
   if (category) query.category = category;
-  if (search) query.$text = { $search: search }; // SKU / name smart search
+  if (search) query.$text = { $search: search };
 
   const products = await Product.find(query)
     .populate("category", "name")
@@ -61,14 +58,12 @@ exports.listProducts = asyncHandler(async (req, res) => {
   return ok(res, { products, total, page: Number(page), limit: Number(limit) });
 });
 
-// GET /api/products/:id
 exports.getProduct = asyncHandler(async (req, res) => {
   const product = await Product.findById(req.params.id).populate("category", "name");
   if (!product) return fail(res, "Product not found.", 404);
   return ok(res, product);
 });
 
-// PUT /api/products/:id
 exports.updateProduct = asyncHandler(async (req, res) => {
   const updates = (({ name, category, uom, description, reorderPoint, reorderQty, isActive }) => ({
     name,
@@ -88,7 +83,6 @@ exports.updateProduct = asyncHandler(async (req, res) => {
   return ok(res, product, "Product updated.");
 });
 
-// DELETE /api/products/:id  (soft delete)
 exports.deactivateProduct = asyncHandler(async (req, res) => {
   const product = await Product.findByIdAndUpdate(
     req.params.id,
@@ -99,7 +93,6 @@ exports.deactivateProduct = asyncHandler(async (req, res) => {
   return ok(res, product, "Product deactivated.");
 });
 
-// GET /api/products/:id/availability  -> stock per location
 exports.getAvailability = asyncHandler(async (req, res) => {
   const items = await StockItem.find({ product: req.params.id })
     .populate({ path: "location", populate: { path: "warehouse", select: "name code" } })

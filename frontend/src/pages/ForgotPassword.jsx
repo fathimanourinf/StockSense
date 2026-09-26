@@ -3,7 +3,6 @@ import { Link, useNavigate } from "react-router-dom";
 import { api } from "../api/client";
 import { useToast } from "../context/ToastContext";
 
-// 3-step flow: request OTP -> verify OTP -> set new password.
 export default function ForgotPassword() {
   const { push } = useToast();
   const navigate = useNavigate();
