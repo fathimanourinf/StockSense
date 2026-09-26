@@ -9,6 +9,13 @@ import Signup from "./pages/Signup";
 import ForgotPassword from "./pages/ForgotPassword";
 import Dashboard from "./pages/Dashboard";
 import Products from "./pages/Products";
+import Receipts from "./pages/Receipts";
+import Deliveries from "./pages/Deliveries";
+import Transfers from "./pages/Transfers";
+import Adjustments from "./pages/Adjustments";
+import MoveHistory from "./pages/MoveHistory";
+import Warehouses from "./pages/Warehouses";
+import Profile from "./pages/Profile";
 
 export default function App() {
   return (
@@ -29,6 +36,13 @@ export default function App() {
             >
               <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/products" element={<Products />} />
+              <Route path="/receipts" element={<Receipts />} />
+              <Route path="/deliveries" element={<Deliveries />} />
+              <Route path="/transfers" element={<Transfers />} />
+              <Route path="/adjustments" element={<Adjustments />} />
+              <Route path="/move-history" element={<MoveHistory />} />
+              <Route path="/warehouses" element={<Warehouses />} />
+              <Route path="/profile" element={<Profile />} />
             </Route>
 
             <Route path="/" element={<Navigate to="/dashboard" replace />} />
