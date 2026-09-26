@@ -4,16 +4,16 @@ const STATUSES = require("./docStatusEnum");
 const adjustmentLineSchema = new mongoose.Schema(
   {
     product: { type: mongoose.Schema.Types.ObjectId, ref: "Product", required: true },
-    systemQty: { type: Number, required: true }, // recorded stock at time of count
-    countedQty: { type: Number, required: true }, // physical count
-    diff: { type: Number, required: true }, // countedQty - systemQty, computed by controller
+    systemQty: { type: Number, required: true },
+    countedQty: { type: Number, required: true },
+    diff: { type: Number, required: true },
   },
   { _id: false }
 );
 
 const stockAdjustmentSchema = new mongoose.Schema(
   {
-    reference: { type: String, required: true, unique: true }, // ADJ-000001
+    reference: { type: String, required: true, unique: true },
     location: { type: mongoose.Schema.Types.ObjectId, ref: "Location", required: true },
     status: { type: String, enum: STATUSES, default: "draft" },
     lines: { type: [adjustmentLineSchema], validate: (v) => v.length > 0 },

@@ -24,7 +24,6 @@ exports.updateWarehouse = asyncHandler(async (req, res) => {
   return ok(res, warehouse, "Warehouse updated.");
 });
 
-// -- Locations (racks / floors / sub-areas within a warehouse) --
 
 exports.createLocation = asyncHandler(async (req, res) => {
   const { warehouse, name, code } = req.body;

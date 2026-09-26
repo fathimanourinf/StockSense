@@ -4,7 +4,6 @@ const asyncHandler = require("../utils/asyncHandler");
 const nextReference = require("../utils/generateReference");
 const { applyStockMovement } = require("../utils/stockService");
 
-// POST /api/transfers  { fromLocation, toLocation, lines: [{product, quantity}], notes }
 exports.createTransfer = asyncHandler(async (req, res) => {
   const { fromLocation, toLocation, lines, notes } = req.body;
   if (!fromLocation || !toLocation || !lines?.length) {
@@ -28,7 +27,6 @@ exports.createTransfer = asyncHandler(async (req, res) => {
   return ok(res, transfer, "Internal transfer created.", 201);
 });
 
-// GET /api/transfers?status=&page=&limit=
 exports.listTransfers = asyncHandler(async (req, res) => {
   const { status, page = 1, limit = 20 } = req.query;
   const filter = {};
@@ -46,7 +44,6 @@ exports.listTransfers = asyncHandler(async (req, res) => {
   return ok(res, { transfers, total, page: Number(page), limit: Number(limit) });
 });
 
-// GET /api/transfers/:id
 exports.getTransfer = asyncHandler(async (req, res) => {
   const transfer = await InternalTransfer.findById(req.params.id)
     .populate("fromLocation", "name code")
@@ -56,7 +53,6 @@ exports.getTransfer = asyncHandler(async (req, res) => {
   return ok(res, transfer);
 });
 
-// PUT /api/transfers/:id
 exports.updateTransfer = asyncHandler(async (req, res) => {
   const transfer = await InternalTransfer.findById(req.params.id);
   if (!transfer) return fail(res, "Internal transfer not found.", 404);
@@ -73,9 +69,6 @@ exports.updateTransfer = asyncHandler(async (req, res) => {
   return ok(res, transfer, "Internal transfer updated.");
 });
 
-// POST /api/transfers/:id/validate
-// Moves stock out of fromLocation and into toLocation. Total company-wide
-// stock is unchanged — only the location changes, exactly as in the spec.
 exports.validateTransfer = asyncHandler(async (req, res) => {
   const transfer = await InternalTransfer.findById(req.params.id);
   if (!transfer) return fail(res, "Internal transfer not found.", 404);
@@ -113,7 +106,6 @@ exports.validateTransfer = asyncHandler(async (req, res) => {
   return ok(res, transfer, "Transfer validated — stock moved between locations.");
 });
 
-// POST /api/transfers/:id/cancel
 exports.cancelTransfer = asyncHandler(async (req, res) => {
   const transfer = await InternalTransfer.findById(req.params.id);
   if (!transfer) return fail(res, "Internal transfer not found.", 404);

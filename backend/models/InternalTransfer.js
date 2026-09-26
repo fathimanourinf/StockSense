@@ -11,7 +11,7 @@ const transferLineSchema = new mongoose.Schema(
 
 const internalTransferSchema = new mongoose.Schema(
   {
-    reference: { type: String, required: true, unique: true }, // IT-000001
+    reference: { type: String, required: true, unique: true },
     fromLocation: { type: mongoose.Schema.Types.ObjectId, ref: "Location", required: true },
     toLocation: { type: mongoose.Schema.Types.ObjectId, ref: "Location", required: true },
     status: { type: String, enum: STATUSES, default: "draft" },

@@ -1,7 +1,7 @@
 const nodemailer = require("nodemailer");
 
 function generateOtpCode() {
-  return String(Math.floor(100000 + Math.random() * 900000)); // 6-digit code
+  return String(Math.floor(100000 + Math.random() * 900000));
 }
 
 async function sendOtpEmail(toEmail, code) {

@@ -4,8 +4,8 @@ const stockLedgerSchema = new mongoose.Schema(
   {
     product: { type: mongoose.Schema.Types.ObjectId, ref: "Product", required: true },
     location: { type: mongoose.Schema.Types.ObjectId, ref: "Location", required: true },
-    changeQty: { type: Number, required: true }, // positive or negative
-    resultingQty: { type: Number, required: true }, // quantity at this location after the change
+    changeQty: { type: Number, required: true },
+    resultingQty: { type: Number, required: true },
     movementType: {
       type: String,
       enum: ["receipt", "delivery", "transfer_in", "transfer_out", "adjustment"],

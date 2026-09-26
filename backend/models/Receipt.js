@@ -12,7 +12,7 @@ const receiptLineSchema = new mongoose.Schema(
 
 const receiptSchema = new mongoose.Schema(
   {
-    reference: { type: String, required: true, unique: true }, // RCPT-000001
+    reference: { type: String, required: true, unique: true },
     supplier: { type: String, required: true, trim: true },
     location: { type: mongoose.Schema.Types.ObjectId, ref: "Location", required: true },
     status: { type: String, enum: STATUSES, default: "draft" },

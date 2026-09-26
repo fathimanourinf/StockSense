@@ -12,7 +12,7 @@ const deliveryLineSchema = new mongoose.Schema(
 
 const deliveryOrderSchema = new mongoose.Schema(
   {
-    reference: { type: String, required: true, unique: true }, // DO-000001
+    reference: { type: String, required: true, unique: true },
     customer: { type: String, required: true, trim: true },
     location: { type: mongoose.Schema.Types.ObjectId, ref: "Location", required: true },
     status: { type: String, enum: STATUSES, default: "draft" },

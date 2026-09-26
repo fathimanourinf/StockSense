@@ -4,7 +4,6 @@ const asyncHandler = require("../utils/asyncHandler");
 const nextReference = require("../utils/generateReference");
 const { applyStockMovement } = require("../utils/stockService");
 
-// POST /api/receipts   { supplier, location, lines: [{product, expectedQty}], notes }
 exports.createReceipt = asyncHandler(async (req, res) => {
   const { supplier, location, lines, notes } = req.body;
   if (!supplier || !location || !lines?.length) {
@@ -25,7 +24,6 @@ exports.createReceipt = asyncHandler(async (req, res) => {
   return ok(res, receipt, "Receipt created.", 201);
 });
 
-// GET /api/receipts?status=&location=&page=&limit=
 exports.listReceipts = asyncHandler(async (req, res) => {
   const { status, location, page = 1, limit = 20 } = req.query;
   const filter = {};
@@ -43,7 +41,6 @@ exports.listReceipts = asyncHandler(async (req, res) => {
   return ok(res, { receipts, total, page: Number(page), limit: Number(limit) });
 });
 
-// GET /api/receipts/:id
 exports.getReceipt = asyncHandler(async (req, res) => {
   const receipt = await Receipt.findById(req.params.id)
     .populate("location", "name code")
@@ -52,7 +49,6 @@ exports.getReceipt = asyncHandler(async (req, res) => {
   return ok(res, receipt);
 });
 
-// PUT /api/receipts/:id   (only while draft/waiting — edit lines, quantities received)
 exports.updateReceipt = asyncHandler(async (req, res) => {
   const receipt = await Receipt.findById(req.params.id);
   if (!receipt) return fail(res, "Receipt not found.", 404);
@@ -70,7 +66,6 @@ exports.updateReceipt = asyncHandler(async (req, res) => {
   return ok(res, receipt, "Receipt updated.");
 });
 
-// POST /api/receipts/:id/validate  -> increases stock, marks as done
 exports.validateReceipt = asyncHandler(async (req, res) => {
   const receipt = await Receipt.findById(req.params.id);
   if (!receipt) return fail(res, "Receipt not found.", 404);
@@ -84,7 +79,7 @@ exports.validateReceipt = asyncHandler(async (req, res) => {
     await applyStockMovement({
       product: line.product,
       location: receipt.location,
-      changeQty: qty, // Receiving stock always increases it
+      changeQty: qty,
       movementType: "receipt",
       sourceDocType: "Receipt",
       sourceDocId: receipt._id,
@@ -100,7 +95,6 @@ exports.validateReceipt = asyncHandler(async (req, res) => {
   return ok(res, receipt, "Receipt validated — stock updated.");
 });
 
-// POST /api/receipts/:id/cancel
 exports.cancelReceipt = asyncHandler(async (req, res) => {
   const receipt = await Receipt.findById(req.params.id);
   if (!receipt) return fail(res, "Receipt not found.", 404);
